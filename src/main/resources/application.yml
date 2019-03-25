@@ -1,0 +1,12 @@
+server:
+  port: 8080
+
+spring:
+  resources:
+    static-locations: "classpath:/static/"
+  thymeleaf:
+    cache: false
+
+sandbox:
+  client:
+    url: https://sandbox-reporting.rpdpymnt.com/api
