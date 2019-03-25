@@ -1,8 +1,6 @@
 package com.huobi.reportingweb.service;
 
-import com.huobi.reportingweb.dto.LoginResponse;
-import com.huobi.reportingweb.dto.TransactionReportRequest;
-import com.huobi.reportingweb.dto.TransactionReportResponse;
+import com.huobi.reportingweb.dto.*;
 import com.huobi.reportingweb.util.JsonUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,25 +47,15 @@ public class TransactionServiceTest {
         TransactionReportResponse resp = service.reportTransaction(new TransactionReportRequest("2015-07-01","2019-03-01"),null);
         assertThat(resp).isNotNull().matches(x->"APPROVED".equals(x.getStatus())
                 && x.getResponse().size()== trxResp.getResponse().size() );
-        assertThat(resp.getResponse()).hasSameElementsAs(trxResp.getResponse())
-                .containsOnly(trxResp.getResponse().get(0),trxResp.getResponse().get(1))
-                .containsOnly(trxResp.getResponse().get(0),trxResp.getResponse().get(1))
-                .containsOnlyElementsOf(trxResp.getResponse())
-                .hasSameElementsAs(trxResp.getResponse());
+        assertThat(resp).isEqualToComparingFieldByFieldRecursively(trxResp);
     }
 
 
     @Test
     public void whenTransactionRequested_TransactionReturn() throws IOException {
-        TransactionReportResponse trxResp = JsonUtils.jsonFile2Object("get_transaction_resp.json", TransactionReportResponse.class);
-        when(restTemplate.postForEntity(anyString(), any(HttpEntity.class),Matchers.<Class<TransactionReportResponse>>any())).thenReturn(new ResponseEntity<>(trxResp,HttpStatus.OK));
-        TransactionReportResponse resp = service.reportTransaction(new TransactionReportRequest("2015-07-01","2019-03-01"),null);
-        assertThat(resp).isNotNull().matches(x->"APPROVED".equals(x.getStatus())
-                && x.getResponse().size()== trxResp.getResponse().size() );
-        assertThat(resp.getResponse()).hasSameElementsAs(trxResp.getResponse())
-                .containsOnly(trxResp.getResponse().get(0),trxResp.getResponse().get(1))
-                .containsOnly(trxResp.getResponse().get(0),trxResp.getResponse().get(1))
-                .containsOnlyElementsOf(trxResp.getResponse())
-                .hasSameElementsAs(trxResp.getResponse());
+        TransactionResponse trxResp = JsonUtils.jsonFile2Object("get_transaction_resp.json", TransactionResponse.class);
+        when(restTemplate.postForEntity(anyString(), any(HttpEntity.class),Matchers.<Class<TransactionResponse>>any())).thenReturn(new ResponseEntity<>(trxResp,HttpStatus.OK));
+        TransactionResponse resp = service.getTransaction(new TransactionRequest("1010992-1539329625-1293"),null);
+        assertThat(resp).isEqualToComparingFieldByFieldRecursively(trxResp);
     }
 }

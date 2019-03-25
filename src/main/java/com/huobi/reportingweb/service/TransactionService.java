@@ -1,9 +1,6 @@
 package com.huobi.reportingweb.service;
 
-import com.huobi.reportingweb.dto.LoginRequest;
-import com.huobi.reportingweb.dto.LoginResponse;
-import com.huobi.reportingweb.dto.TransactionReportRequest;
-import com.huobi.reportingweb.dto.TransactionReportResponse;
+import com.huobi.reportingweb.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,10 +23,20 @@ public class TransactionService {
     }
 
     public TransactionReportResponse reportTransaction(TransactionReportRequest request,String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
-        HttpEntity<?> httpEntity = new HttpEntity<Object>(request,headers);
+        HttpEntity<?> httpEntity = getHttpEntity(request, token);
         ResponseEntity<TransactionReportResponse> response = restTemplate.postForEntity(reportingServerUrl+"/v3/transactions/report", httpEntity, TransactionReportResponse.class);
         return response.getBody();
+    }
+
+    public TransactionResponse getTransaction(TransactionRequest request, String token) {
+        HttpEntity<?> httpEntity = getHttpEntity(request, token);
+        ResponseEntity<TransactionResponse> response = restTemplate.postForEntity(reportingServerUrl+"/v3/transaction", httpEntity, TransactionResponse.class);
+        return response.getBody();
+    }
+
+    private HttpEntity<?> getHttpEntity(Object request, String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        return new HttpEntity<Object>(request,headers);
     }
 }
