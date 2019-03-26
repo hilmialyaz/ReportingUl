@@ -19,15 +19,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-public class CustomerInfoResourceControlller {
+public class CustomerInfoResourceController {
 
-    private final Logger log = LoggerFactory.getLogger(CustomerInfoResourceControlller.class);
+    private final Logger log = LoggerFactory.getLogger(CustomerInfoResourceController.class);
 
     private ClientInformationService clientInformationService;
 
     private TokenHandlerService tokenHandlerService;
 
-    public CustomerInfoResourceControlller(ClientInformationService clientInformationService, TokenHandlerService tokenHandlerService) {
+    public CustomerInfoResourceController(ClientInformationService clientInformationService, TokenHandlerService tokenHandlerService) {
         this.clientInformationService = clientInformationService;
         this.tokenHandlerService = tokenHandlerService;
     }
