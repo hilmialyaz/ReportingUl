@@ -5,6 +5,7 @@ import com.huobi.reportingweb.dto.GetClientInfoResponse;
 import com.huobi.reportingweb.exception.GenericApiException;
 import com.huobi.reportingweb.service.ClientInformationService;
 import com.huobi.reportingweb.service.TokenHandlerService;
+import com.huobi.reportingweb.util.Constants;
 import com.huobi.reportingweb.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class CustomerInfoResourceControlller {
         String serviceToken = tokenHandlerService.getServiceToken();
         Optional<GetClientInfoResponse> clientInfo = clientInformationService.getClientInfo(new GetClientInfoRequest(transactionId), serviceToken);
         clientInfo.ifPresent(resp -> {
-            if("DECLINED".equals(resp.getStatus()))
+            if(Constants.DECLINED.equals(resp.getStatus()))
                 throw new GenericApiException(clientInfo.get().getMessage());
         });
         return ResponseUtil.wrapOrNotFound(clientInfo);
