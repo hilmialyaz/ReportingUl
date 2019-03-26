@@ -2,11 +2,12 @@ package com.huobi.reportingweb.service;
 
 import com.huobi.reportingweb.dto.LoginRequest;
 import com.huobi.reportingweb.dto.LoginResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @Service
 public class LoginService {
@@ -20,8 +21,8 @@ public class LoginService {
         this.restTemplate = restTemplate;
     }
 
-    public LoginResponse login(String userName, String password) {
+    public Optional<LoginResponse> login(String userName, String password) {
         ResponseEntity<LoginResponse> response = restTemplate.postForEntity(reportingServerUrl+"/v3/merchant/user/login", new LoginRequest(userName, password), LoginResponse.class);
-        return response.getBody();
+        return Optional.ofNullable(response.getBody());
     }
 }

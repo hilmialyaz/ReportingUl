@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -19,8 +21,8 @@ public class LoginServiceIntegrationTest {
 
     @Test
     public void whenLoginRequest_LoggedIn(){
-        LoginResponse response = loginService.login("demo@bumin.com.tr","cjaiU8CV");
-        assertThat(response).isNotNull().matches(x-> x.getStatus().equals("APPROVED"));
+        Optional<LoginResponse> response = loginService.login("demo@bumin.com.tr","cjaiU8CV");
+        assertThat(response).isNotNull().matches(x-> x.get().getStatus().equals("APPROVED"));
     }
 
 
