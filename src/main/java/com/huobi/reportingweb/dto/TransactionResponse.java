@@ -5,12 +5,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TransactionResponse {
-
+    private String status;
+    private String message;
     private CustomerInfo customerInfo;
     private Fx fx;
     private Transaction transaction;
     private Merchant__ merchant;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    public TransactionResponse() {
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public CustomerInfo getCustomerInfo() {
         return customerInfo;

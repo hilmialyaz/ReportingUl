@@ -34,5 +34,7 @@ public class TokenHandlerService {
     }
 
 
-
+    public void invalidateToken() {
+        this.token =  Optional.ofNullable(null);
+    }
 }

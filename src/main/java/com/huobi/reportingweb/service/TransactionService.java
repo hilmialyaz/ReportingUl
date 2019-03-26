@@ -3,13 +3,11 @@ package com.huobi.reportingweb.service;
 import com.huobi.reportingweb.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.util.Optional;
 
 import static com.huobi.reportingweb.util.HttpUtils.getHttpEntity;
 
@@ -24,16 +22,16 @@ public class TransactionService {
         this.restTemplate = restTemplate;
     }
 
-    public TransactionReportResponse reportTransaction(TransactionReportRequest request,String token) {
+    public Optional<TransactionReportResponse> reportTransaction(TransactionReportRequest request, String token) {
         HttpEntity<?> httpEntity = getHttpEntity(request, token);
         ResponseEntity<TransactionReportResponse> response = restTemplate.postForEntity(reportingServerUrl+"/v3/transactions/report", httpEntity, TransactionReportResponse.class);
-        return response.getBody();
+        return Optional.ofNullable(response.getBody());
     }
 
-    public TransactionResponse getTransaction(TransactionRequest request, String token) {
+    public Optional<TransactionResponse> getTransaction(TransactionRequest request, String token) {
         HttpEntity<?> httpEntity = getHttpEntity(request, token);
         ResponseEntity<TransactionResponse> response = restTemplate.postForEntity(reportingServerUrl+"/v3/transaction", httpEntity, TransactionResponse.class);
-        return response.getBody();
+        return Optional.ofNullable(response.getBody());
     }
 
 

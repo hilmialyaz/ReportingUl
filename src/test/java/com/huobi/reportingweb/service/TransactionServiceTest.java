@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
@@ -44,10 +45,10 @@ public class TransactionServiceTest {
     public void whenRequestReport_ReportExists() throws IOException {
         TransactionReportResponse trxResp = JsonUtils.jsonFile2Object("transactionreport_resp.json", TransactionReportResponse.class);
         when(restTemplate.postForEntity(anyString(), any(HttpEntity.class),Matchers.<Class<TransactionReportResponse>>any())).thenReturn(new ResponseEntity<>(trxResp,HttpStatus.OK));
-        TransactionReportResponse resp = service.reportTransaction(new TransactionReportRequest("2015-07-01","2019-03-01"),null);
-        assertThat(resp).isNotNull().matches(x->"APPROVED".equals(x.getStatus())
-                && x.getResponse().size()== trxResp.getResponse().size() );
-        assertThat(resp).isEqualToComparingFieldByFieldRecursively(trxResp);
+        Optional<TransactionReportResponse> resp = service.reportTransaction(new TransactionReportRequest("2015-07-01","2019-03-01"),null);
+        assertThat(resp).isNotNull().matches(x->"APPROVED".equals(x.get().getStatus())
+                && x.get().getResponse().size()== trxResp.getResponse().size() );
+        assertThat(resp.get()).isEqualToComparingFieldByFieldRecursively(trxResp);
     }
 
 
@@ -55,7 +56,7 @@ public class TransactionServiceTest {
     public void whenTransactionRequested_TransactionReturn() throws IOException {
         TransactionResponse trxResp = JsonUtils.jsonFile2Object("get_transaction_resp.json", TransactionResponse.class);
         when(restTemplate.postForEntity(anyString(), any(HttpEntity.class),Matchers.<Class<TransactionResponse>>any())).thenReturn(new ResponseEntity<>(trxResp,HttpStatus.OK));
-        TransactionResponse resp = service.getTransaction(new TransactionRequest("1010992-1539329625-1293"),null);
-        assertThat(resp).isEqualToComparingFieldByFieldRecursively(trxResp);
+        Optional<TransactionResponse> resp = service.getTransaction(new TransactionRequest("1010992-1539329625-1293"),null);
+        assertThat(resp.get()).isEqualToComparingFieldByFieldRecursively(trxResp);
     }
 }

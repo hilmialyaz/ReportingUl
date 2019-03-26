@@ -1,6 +1,8 @@
 package com.huobi.reportingweb.exception;
 
 import com.huobi.reportingweb.dto.ApiError;
+import com.huobi.reportingweb.service.TokenHandlerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Autowired
+    TokenHandlerService tokenHandlerService;
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -40,6 +45,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(GenericApiException.class)
     protected ResponseEntity<Object> handleGenericApiExceptions(GenericApiException ex) {
+        if("Token Expired".equals(ex.getMessage()))
+            tokenHandlerService.invalidateToken();
         return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex));
     }
 

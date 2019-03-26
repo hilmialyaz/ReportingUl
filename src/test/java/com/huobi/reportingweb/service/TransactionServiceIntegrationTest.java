@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -36,15 +37,15 @@ public class TransactionServiceIntegrationTest {
 
     @Test
     public void whenRequestReport_ReportExists(){
-        TransactionReportResponse resp = service.reportTransaction(new TransactionReportRequest("2015-07-01","2019-03-01"),token);
-        assertThat(resp).isNotNull().matches(x->"APPROVED".equals(x.getStatus()) && x.getResponse().size()>0 );
+        Optional<TransactionReportResponse> resp = service.reportTransaction(new TransactionReportRequest("2015-07-01","2019-03-01"),token);
+        assertThat(resp).isNotNull().matches(x->"APPROVED".equals(x.get().getStatus()) && x.get().getResponse().size()>0 );
     }
 
     @Test
     public void whenRequestTransaction_ReturnTransaction() throws IOException {
         TransactionResponse trxResp = JsonUtils.jsonFile2Object("get_transaction_resp.json", TransactionResponse.class);
-        TransactionResponse resp = service.getTransaction(new TransactionRequest(trxResp.getTransaction().getMerchant().getTransactionId()),token);
-        assertThat(resp).isEqualToComparingFieldByFieldRecursively(trxResp);
+        Optional<TransactionResponse> resp = service.getTransaction(new TransactionRequest(trxResp.getTransaction().getMerchant().getTransactionId()),token);
+        assertThat(resp.get()).isEqualToComparingFieldByFieldRecursively(trxResp);
     }
 
 
