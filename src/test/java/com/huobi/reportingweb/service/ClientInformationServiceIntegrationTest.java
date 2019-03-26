@@ -39,7 +39,9 @@ public class ClientInformationServiceIntegrationTest {
     @Test
     public void getCustomerDetails_WithTransactionId() throws IOException {
         GetClientInfoResponse trxResp = JsonUtils.jsonFile2Object("get_clientinfo_resp.json", GetClientInfoResponse.class);
-        GetClientInfoResponse clientInfo = clientInformationService.getClientInfo(new GetClientInfoRequest(""), token);
+        GetClientInfoResponse clientInfo = clientInformationService.getClientInfo(new GetClientInfoRequest("1010992-1539329625-1293"), token);
         assertThat(clientInfo).isEqualToComparingFieldByFieldRecursively(trxResp);
     }
+
+
 }
