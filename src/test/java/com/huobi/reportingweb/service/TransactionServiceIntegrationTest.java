@@ -24,16 +24,13 @@ public class TransactionServiceIntegrationTest {
     TransactionService service;
 
     @Autowired
-    LoginService loginService;
+    TokenHandlerService tokenHandlerService;
 
     private  String token;
 
     @Before
     public void setUp() throws Exception {
-        LoginResponse response = loginService.login("demo@bumin.com.tr","cjaiU8CV");
-        if(response==null || !"APPROVED".equals(response.getStatus()))
-            throw new IllegalAccessException();
-        token = response.getToken();
+        token = tokenHandlerService.getServiceToken();
     }
 
 

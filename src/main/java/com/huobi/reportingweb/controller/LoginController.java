@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.Optional;
+
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Controller
@@ -35,12 +37,13 @@ public class LoginController {
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(authentication);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, context);
-
-        LoginResponse response = loginService.login(email,password);
+        /*
+        Optional<LoginResponse> response = loginService.login(email,password);
         if(response==null || response.getToken()==null || response.getToken().isEmpty())
             throw new RuntimeException("Login Failed");
         int sessionValidDuration = 10 * 60;
         session.setMaxInactiveInterval(sessionValidDuration);
+        */
         return "/admin";
     }
 
