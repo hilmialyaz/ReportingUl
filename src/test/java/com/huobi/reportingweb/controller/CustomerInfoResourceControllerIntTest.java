@@ -68,7 +68,8 @@ public class CustomerInfoResourceControllerIntTest {
     @Test
     public void getNonExistingCustomerInfo() throws Exception {
         restCustomerInfoMockMvc.perform(get("/api/customer-infos/{transactionId}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound()).
+                andExpect(jsonPath("$.status").value("NOT_FOUND"));
     }
 
 }
