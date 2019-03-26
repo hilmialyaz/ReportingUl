@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.util.Date;
 
+import static com.huobi.reportingweb.util.HttpUtils.getHttpEntity;
+
 @Service
 public class TransactionService {
     @Value("${sandbox.client.url}")
@@ -34,9 +36,5 @@ public class TransactionService {
         return response.getBody();
     }
 
-    private HttpEntity<?> getHttpEntity(Object request, String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
-        return new HttpEntity<Object>(request,headers);
-    }
+
 }
