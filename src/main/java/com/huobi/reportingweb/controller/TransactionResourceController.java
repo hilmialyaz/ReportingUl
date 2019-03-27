@@ -22,8 +22,6 @@ public class TransactionResourceController {
 
     private final Logger log = LoggerFactory.getLogger(TransactionResourceController.class);
 
-    private static final String ENTITY_NAME = "transactionReport";
-
     private TransactionService service;
 
     private TokenHandlerService tokenHandlerService;
@@ -43,7 +41,7 @@ public class TransactionResourceController {
      */
     @GetMapping("/transaction-reports")
     public ResponseEntity<TransactionReportResponse> getTransactionReport(@RequestParam("start") String start,@RequestParam("end")  String end) {
-        log.debug("REST request to get TransactionReport : {}", start,end);
+        log.debug("REST request to get TransactionReport : {} {}", start,end);
         Optional<TransactionReportResponse> response = service.reportTransaction(new TransactionReportRequest(start,end),tokenHandlerService.getServiceToken());
         response.ifPresent(resp -> {
             if(Constants.DECLINED.equals(resp.getStatus()))
