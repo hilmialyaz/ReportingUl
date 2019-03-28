@@ -1,6 +1,6 @@
 # ReportingUl
 
-https://fast-dawn-15417.herokuapp.com/dashboards/v1
+https://fast-dawn-15417.herokuapp.com
 
 https://sonarcloud.io/dashboard?id=com.huobi%3Areportingweb
 
